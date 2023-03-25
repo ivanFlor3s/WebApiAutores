@@ -18,7 +18,7 @@ namespace WebApiAutores.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Autor>>> Get() 
         {
-            return await _context.Autores.ToListAsync();
+            return await _context.Autores.Include(x=>x.Libros).ToListAsync();
         }
 
         [HttpPost]
@@ -28,5 +28,36 @@ namespace WebApiAutores.Controllers
             await _context.SaveChangesAsync();
             return Ok(autor);
         }
+
+        [HttpPut("{id:int}")]
+        public async Task<ActionResult> Put(Autor autor, int id)
+        {
+            if(autor.Id != id)
+            {
+                return BadRequest("El id del autor no coincide con el id de la URL");
+            }
+
+            _context.Update(autor);
+            await _context.SaveChangesAsync();
+            return Ok(autor);
+        }
+
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            var existe = await _context.Autores.AnyAsync(autor => autor.Id == id);
+            if (!existe)
+            {
+                return NotFound();
+            }
+            else
+            {
+                _context.Remove(new Autor() { Id = id });
+                await _context.SaveChangesAsync();
+                return Ok();
+            }
+
+        }
+
     }
 }

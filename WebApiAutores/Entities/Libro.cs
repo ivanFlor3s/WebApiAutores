@@ -1,4 +1,6 @@
-﻿namespace WebApiAutores.Entities
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace WebApiAutores.Entities
 {
     public class Libro
     {

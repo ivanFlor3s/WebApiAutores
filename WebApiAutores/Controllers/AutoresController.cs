@@ -21,6 +21,17 @@ namespace WebApiAutores.Controllers
             return await _context.Autores.Include(x=>x.Libros).ToListAsync();
         }
 
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<Autor>> Get(int id)
+        {
+            var autor = await _context.Autores.FirstOrDefaultAsync(x => x.Id == id);
+            if(autor == null)
+            {
+                return NotFound();
+            }
+            return autor;
+        }
+
         [HttpPost]
         public async Task<ActionResult> Post(Autor autor)
         {

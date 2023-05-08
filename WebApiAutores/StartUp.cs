@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using System.Text.Json.Serialization;
 
 namespace WebApiAutores
@@ -19,7 +20,11 @@ namespace WebApiAutores
                 options.UseNpgsql(Configuration.GetConnectionString("AutoresDb")));
             
             services.AddEndpointsApiExplorer();
-            services.AddSwaggerGen();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebApiAutores", Version = "v1", Description = "Una de las mejores apis del mundo Mundial!" });
+            });
+            services.AddAutoMapper(typeof(StartUp));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
